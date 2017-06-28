@@ -6,8 +6,12 @@ python:
   - '3.5'
   - '3.6'
 
+services:
+  - redis-server
+
 script:
   - pip install coverage codecov
+  - pip install redis
   - coverage run setup.py test
 
 after_success:
