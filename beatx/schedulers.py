@@ -69,9 +69,6 @@ class ClusterScheduler(Scheduler):
 
         super().__init__(app, *args, **kwargs)
 
-        if not self.acquire_lock():
-            logger.info('beat: another beat instance already running. awaiting...')
-
     def acquire_lock(self):
         acquired = self.store.acquire_lock(self.lock_ttl)
 
