@@ -2,8 +2,6 @@ import pickle
 
 from redis import StrictRedis
 
-from ..schedulers import Scheduler
-
 
 class Store:
     SCHEDULE_KEY = 'celery:schedule'
@@ -52,6 +50,3 @@ class Store:
 
     def _deserialize_entry(self, data):
         return pickle.loads(data)
-
-
-Scheduler.register_store_class('redis', Store)

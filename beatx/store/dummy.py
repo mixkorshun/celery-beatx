@@ -1,6 +1,3 @@
-from ..schedulers import Scheduler
-
-
 class Store:
     def __init__(self, store_url=None):
         pass
@@ -22,6 +19,3 @@ class Store:
 
     def release_lock(self):
         pass
-
-
-Scheduler.register_store_class('dummy', Store)

@@ -1,52 +1,47 @@
 from urllib.parse import urlparse
 
 from celery.beat import Scheduler as BaseScheduler
+from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
+from .utils import import_string
+
 logger = get_logger(__name__)
+
+
+def get_store(app):
+    store_classes = getattr(app.conf, 'CELERY_BEAT_STORE_CLASSES', {
+        'dummy': 'beatx.store.dummy.Store',
+        'redis': 'beatx.store.redis.Store',
+    })
+    store_url = getattr(app.conf, 'CELERY_BEAT_STORE', 'dummy://')
+
+    scheme = urlparse(store_url).scheme
+
+    try:
+        store_class = store_classes[scheme]
+    except KeyError:
+        raise ImproperlyConfigured(
+            '"%(used)s" store scheme is unsupported. Available stores schemes: %(available)s' % {
+                'used': scheme,
+                'available': ', '.join('"%s"' % x for x in store_classes.keys())
+            }
+        )
+
+    if not isinstance(store_class, type):
+        store_class = import_string(store_class)
+
+    return store_class(store_url)
 
 
 class Scheduler(BaseScheduler):
     """
     Celery scheduler.
     """
-    store_registry = {}
-
-    @classmethod
-    def register_store_class(cls, scheme, store_class):
-        """
-        Register store scheme.
-
-        :param scheme: store url scheme
-        :param store_class: store class
-        """
-        cls.store_registry[scheme] = store_class
-
-    @classmethod
-    def unregister_store(cls, scheme):
-        """
-        Delete store scheme from registry.
-
-        :param scheme: store url scheme
-        """
-        del cls.store_registry[scheme]
-
-    @classmethod
-    def get_store(cls, store_url):
-        """
-        Create store instance.
-
-        :param store: store url
-        :return: store instance
-        """
-        _url = urlparse(store_url)
-
-        return cls.store_registry[_url.scheme](store_url)
 
     def __init__(self, app, *args, **kwargs):
-        self.store = self.get_store(
-            getattr(app.conf, 'CELERY_BEAT_STORE', 'dummy://')
-        )
+        self.store = get_store(app)
+
         super().__init__(app, *args, **kwargs)
 
     def setup_schedule(self):
