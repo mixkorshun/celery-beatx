@@ -35,11 +35,6 @@ class TestClusterSchedulerActiveMode:
     Test active mode of cluster-scheduler.
     """
 
-    def test_lock_acquired_on_setup(self):
-        scheduler = ClusterScheduler(get_mock_app())
-
-        assert scheduler.store.acquire_lock.called is True
-
     def test_entries_sync_on_setup(self):
         scheduler = ClusterScheduler(get_mock_app())
 
@@ -84,7 +79,6 @@ class TestClusterSchedulerInactiveMode:
     def test_setup(self):
         scheduler = ClusterScheduler(get_mock_app('mock+inactive://'))
 
-        assert scheduler.store.acquire_lock.called is True
         assert scheduler.store.load_entries.called is False
         assert scheduler.store.save_entries.called is False
 
