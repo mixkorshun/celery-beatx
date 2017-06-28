@@ -76,7 +76,6 @@ class ClusterScheduler(Scheduler):
         acquired = self.store.acquire_lock(self.lock_ttl)
 
         if acquired:
-            logger.info('beat: lock acquired.')
             self.setup_schedule()
 
         return acquired
@@ -89,11 +88,14 @@ class ClusterScheduler(Scheduler):
         if not self.store.has_locked():
             acquired = self.acquire_lock()
 
-            if not acquired:
+            if acquired:
+                logger.info('beat: Lock acquired.')
+            else:
+                logger.info('beat: Awaiting lock...')
                 return self.max_interval
         else:
-            logger.debug('beat: renew lock.')
             self.store.renew_lock()
+            logger.debug('beat: Lock renewed.')
 
         return super().tick(*args, **kwargs)
 
@@ -108,4 +110,4 @@ class ClusterScheduler(Scheduler):
 
         if self.store.has_locked():
             self.store.release_lock()
-            logger.info('beat: lock released.')
+            logger.info('beat: Lock released.')
