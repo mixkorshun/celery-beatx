@@ -1,11 +1,8 @@
 import pickle
 
-from celery.utils.log import get_logger
 from redis import StrictRedis
 
 from ..schedulers import Scheduler
-
-logger = get_logger(__name__)
 
 
 class Store:
@@ -36,10 +33,7 @@ class Store:
 
         if lock.acquire(blocking=False):
             self.lock = lock
-            logger.info('beat: lock acquired.')
             return True
-
-        logger.info('beat: another beat instance already running. awaiting...')
 
         return False
 
@@ -49,12 +43,9 @@ class Store:
 
         self.rdb.pexpire(self.LOCK_KEY, self.lock.timeout * 1000)
 
-        logger.info('beat: lock renewed.')
-
     def release_lock(self):
         self.lock.release()
         self.lock = None
-        logger.info('beat: lock released.')
 
     def _serialize_entry(self, entry):
         return pickle.dumps(entry)

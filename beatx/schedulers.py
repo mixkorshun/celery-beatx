@@ -74,12 +74,14 @@ class ClusterScheduler(Scheduler):
 
         super().__init__(app, *args, **kwargs)
 
-        self.acquire_lock()
+        if not self.acquire_lock():
+            logger.info('beat: another beat instance already running. awaiting...')
 
     def acquire_lock(self):
         acquired = self.store.acquire_lock(self.lock_ttl)
 
         if acquired:
+            logger.info('beat: lock acquired.')
             self.setup_schedule()
 
         return acquired
@@ -95,6 +97,7 @@ class ClusterScheduler(Scheduler):
             if not acquired:
                 return self.max_interval
         else:
+            logger.debug('beat: renew lock.')
             self.store.renew_lock()
 
         return super().tick(*args, **kwargs)
@@ -110,3 +113,4 @@ class ClusterScheduler(Scheduler):
 
         if self.store.has_locked():
             self.store.release_lock()
+            logger.info('beat: lock released.')
