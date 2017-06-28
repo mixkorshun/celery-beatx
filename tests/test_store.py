@@ -22,12 +22,12 @@ def test_dummy_store_api():
 class TestRedisStore:
     store = None
 
-    def setup_method(self):
+    def setup_method(self, method):
         self.store = redis.Store(
             environ.get('REDIS_URL', 'redis://127.0.0.1/0')
         )
 
-    def teardown_method(self):
+    def teardown_method(self, method):
         self.store.rdb.flushdb()
 
     def test_entries_save_load(self):
