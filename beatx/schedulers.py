@@ -10,6 +10,12 @@ logger = get_logger(__name__)
 
 
 def get_store(app):
+    """
+    Get store object fro celery application.
+
+    :param app: celery application
+    :return: store
+    """
     store_classes = getattr(app.conf, 'CELERY_BEAT_STORE_CLASSES', {
         'dummy': 'beatx.store.dummy.Store',
         'redis': 'beatx.store.redis.Store',
@@ -37,6 +43,8 @@ def get_store(app):
 class Scheduler(BaseScheduler):
     """
     Celery scheduler.
+    
+    Simple celery scheduler which use store class to load/save schedule.
     """
 
     def __init__(self, app, *args, **kwargs):
@@ -57,7 +65,7 @@ class Scheduler(BaseScheduler):
 
 class ClusterScheduler(Scheduler):
     """
-    Celery multi-scheduler.
+    Celery cluster-scheduler.
 
     Only single instance of running beat instances will be active.
     Another instances will run in "sleep-mode" and will waiting
