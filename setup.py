@@ -7,7 +7,7 @@ setup(
     description='Adds scheduler and cluster-scheduler for celery',
     keywords=['celery', 'celerybeat', 'scheduler'],
 
-    # long_description=open('README.rst', 'r').read(),
+    long_description=open('README.rst', 'r').read(),
 
     author='Vladislav Bakin',
     author_email='mixkorshun@gmail.com',
