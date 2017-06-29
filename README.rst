@@ -1,4 +1,3 @@
-.. highlight:: language
 celery-beatx
 ============
 
