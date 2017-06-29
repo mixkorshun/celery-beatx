@@ -2,19 +2,19 @@ celery-beatx
 ============
 
 .. image:: https://travis-ci.org/mixkorshun/celery-beatx.svg?branch=master
-:alt: build status
+    :alt: build status
    :target: https://travis-ci.org/mixkorshun/celery-beatx
 .. image:: https://codecov.io/gh/mixkorshun/celery-beatx/branch/master/graph/badge.svg
-:alt: codecov
+    :alt: codecov
    :target: https://codecov.io/gh/mixkorshun/celery-beatx
 .. image:: https://badge.fury.io/py/celery-beatx.svg
-:alt: pypi
+    :alt: pypi
    :target: https://pypi.python.org/pypi/celery-beatx
 .. image:: https://img.shields.io/badge/code%20style-pep8-orange.svg
-:alt: pep8
+    :alt: pep8
    :target: https://www.python.org/dev/peps/pep-0008/
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
-:alt: MIT
+    :alt: MIT
    :target: https://opensource.org/licenses/MIT
 
 BeatX is celery plugin which improve celery beat functionality.
