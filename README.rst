@@ -34,7 +34,9 @@ The package can be installed using::
 
 Add following settings to celery configuration::
 
-    CELERY_BEAT_SCHEDULER = 'beatx.schedulers.Scheduler' # (or beatx.schedulers.ClusterScheduler to use cluster scheduler)
+    CELERY_BEAT_SCHEDULER = 'beatx.schedulers.Scheduler'
+    # or
+    # CELERY_BEAT_SCHEDULER = 'beatx.schedulers.ClusterScheduler'
 
     CELERY_BEAT_STORE = "redis://127.0.0.1:6379/0"
 
