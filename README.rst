@@ -28,11 +28,13 @@ See the documentation_ for more details.
 Installation
 ------------
 
-The package can be installed using::
+The package can be installed using:
+.. code-block:: bash
 
-    pip install celery-beatx
+   $ pip install celery-beatx
 
-Add following settings to celery configuration::
+Add following settings to celery configuration:
+.. code-block:: python
 
     CELERY_BEAT_SCHEDULER = 'beatx.schedulers.Scheduler'
     # or
