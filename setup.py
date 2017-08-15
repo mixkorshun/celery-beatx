@@ -15,9 +15,6 @@ setup(
     maintainer_email='mixkorshun@gmail.com',
 
     license='MIT',
-    setup_requires=[
-        'pytest-runner',
-    ],
 
     install_requires=[
         'celery',

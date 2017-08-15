@@ -10,8 +10,10 @@ services:
   - redis-server
 
 script:
+  - pip install -e .
   - pip install -r test_requirements.txt
   - pip install pytest-cov codecov
+
   - py.test --cov ./ .
 
 after_success:
