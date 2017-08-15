@@ -25,9 +25,6 @@ setup(
 
     packages=find_packages(exclude=['tests.*', 'tests']),
 
-    test_suite='tests',
-    test_requires=['pytest', 'ephem', 'redis'],
-
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

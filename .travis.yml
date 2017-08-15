@@ -10,9 +10,9 @@ services:
   - redis-server
 
 script:
-  - pip install coverage codecov
-  - pip install redis
-  - coverage run setup.py test
+  - pip install -r test_requirements.txt
+  - pip install pytest-cov codecov
+  - py.test --cov ./ .
 
 after_success:
   - codecov
