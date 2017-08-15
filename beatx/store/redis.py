@@ -1,6 +1,8 @@
-import pickle
+import json
 
 from redis import StrictRedis
+
+from beatx import serializer
 
 
 class Store:
@@ -13,14 +15,16 @@ class Store:
 
     def load_entries(self):
         return {
-            name.decode('utf-8'): self._deserialize_entry(data)
-            for name, data in self.rdb.hgetall(self.SCHEDULE_KEY).items()
+            name.decode(): serializer.deserialize_entry(
+                json.loads(data.decode())
+            ) for name, data in self.rdb.hgetall(self.SCHEDULE_KEY).items()
         }
 
     def save_entries(self, entries):
         self.rdb.hmset(self.SCHEDULE_KEY, {
-            name: self._serialize_entry(entry)
-            for name, entry in entries.items()
+            name: json.dumps(
+                serializer.serialize_entry(entry)
+            ) for name, entry in entries.items()
         })
 
     def has_locked(self):
@@ -44,9 +48,3 @@ class Store:
     def release_lock(self):
         self.lock.release()
         self.lock = None
-
-    def _serialize_entry(self, entry):
-        return pickle.dumps(entry)
-
-    def _deserialize_entry(self, data):
-        return pickle.loads(data)
