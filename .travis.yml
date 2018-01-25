@@ -9,10 +9,13 @@ python:
 services:
   - redis-server
 
+before_script:
+  - pip install -q codecov flake8
+
 script:
-  - pip install -e .
-  - pip install -r test_requirements.txt
-  - pip install codecov
+  - flake8 beatx/
+
+  - pip install -q -r test_requirements.txt && pip install -e .
 
   - py.test --cov ./ .
 
