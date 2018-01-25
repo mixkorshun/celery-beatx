@@ -4,15 +4,13 @@ setup(
     name='celery-beatx',
     version='0.3.0',
     url='https://github.com/mixkorshun/celery-beatx',
-    description='Adds scheduler and cluster-scheduler for celery',
-    keywords=['celery', 'celerybeat', 'scheduler'],
+    description='Fail-safety scheduler for Celery',
+    keywords=['celery', 'celery-beat', 'scheduler'],
 
     long_description=open('README.rst', 'r').read(),
 
     author='Vladislav Bakin',
     author_email='mixkorshun@gmail.com',
-    maintainer='Vladislav Bakin',
-    maintainer_email='mixkorshun@gmail.com',
 
     license='MIT',
 
