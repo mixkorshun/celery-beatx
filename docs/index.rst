@@ -1,15 +1,29 @@
-.. celery-beatx documentation master file, created by
-   sphinx-quickstart on Thu Jun 29 12:32:55 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to celery-beatx's documentation!
 ========================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+BeatX is modern fail-safe schedule for Celery.
 
+BeatX allows you store schedule in different storages and
+provides functionality to start celery-beat simultaneously at many nodes.
+
+
+Install
+-------
+
+The package can be installed using::
+
+    pip install celery-beatx
+
+After package installed you should set celery scheduler::
+
+   celery_app.config_from_object({
+      # ...
+      'beat_scheduler': 'beatx.schedulers.Scheduler',
+      'beat_store': 'redis://127.0.0.1:6379/',
+      # ...
+   })
+
+It works same as default celery scheduler, but stores schedule in redis storage.
 
 
 Indices and tables
