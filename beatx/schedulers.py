@@ -16,11 +16,11 @@ def get_store(app):
     :param app: celery application
     :return: store
     """
-    store_classes = getattr(app.conf, 'CELERY_BEAT_STORE_CLASSES', {
+    store_classes = getattr(app.conf, 'beat_store_classes', {
         'dummy': 'beatx.store.dummy.Store',
         'redis': 'beatx.store.redis.Store',
     })
-    store_url = getattr(app.conf, 'CELERY_BEAT_STORE', 'dummy://')
+    store_url = getattr(app.conf.beat_store, 'beat_store')
 
     scheme = urlparse(store_url).scheme
 
@@ -53,7 +53,7 @@ class Scheduler(BaseScheduler):
         super().__init__(app, *args, **kwargs)
 
     def setup_schedule(self):
-        self.merge_inplace(self.app.conf.CELERY_BEAT_SCHEDULE)
+        self.merge_inplace(self.app.conf.beat_schedule)
         self.install_default_entries(self.schedule)
         self.update_from_dict(self.store.load_entries())
 
@@ -73,7 +73,7 @@ class ClusterScheduler(Scheduler):
     """
 
     def __init__(self, app, *args, **kwargs):
-        self.lock_ttl = getattr(app.conf, 'CELERY_BEAT_STORE_LOCK_TTL', 60)
+        self.lock_ttl = getattr(app.conf, 'beat_store_lock_ttl', 60)
 
         super().__init__(app, *args, **kwargs)
 
