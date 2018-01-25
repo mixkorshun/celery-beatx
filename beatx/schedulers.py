@@ -20,7 +20,7 @@ def get_store(app):
         'dummy': 'beatx.store.dummy.Store',
         'redis': 'beatx.store.redis.Store',
     })
-    store_url = getattr(app.conf.beat_store, 'beat_store')
+    store_url = getattr(app.conf, 'beat_store')
 
     scheme = urlparse(store_url).scheme
 

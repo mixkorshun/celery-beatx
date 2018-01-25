@@ -4,11 +4,11 @@ from unittest.mock import Mock
 def get_mock_app(store_url='mock://'):
     return Mock(
         conf=Mock(
-            CELERY_BEAT_SCHEDULE={},
-            CELERY_BEAT_STORE=store_url,
-            CELERY_BEAT_STORE_LOCK_TTL=60,
+            beat_schedule={},
+            beat_store=store_url,
+            beat_store_lock_ttl=60,
 
-            CELERY_BEAT_STORE_CLASSES={
+            beat_store_classes={
                 'dummy': 'beatx.store.dummy.Store',
                 'redis': 'beatx.store.redis.Store',
                 'mock': Mock(
