@@ -28,9 +28,12 @@ def get_store(app):
         store_class = store_classes[scheme]
     except KeyError:
         raise ImproperlyConfigured(
-            '"%(used)s" store scheme is unsupported. Available stores schemes: %(available)s' % {
+            '"%(used)s" store scheme is unsupported. '
+            'Available stores schemes: %(available)s' % {
                 'used': scheme,
-                'available': ', '.join('"%s"' % x for x in store_classes.keys())
+                'available': ', '.join(
+                    '"%s"' % x for x in store_classes.keys()
+                )
             }
         )
 
@@ -43,7 +46,7 @@ def get_store(app):
 class Scheduler(BaseScheduler):
     """
     Celery scheduler.
-    
+
     Simple celery scheduler which use store class to load/save schedule.
     """
 

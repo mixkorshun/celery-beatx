@@ -3,7 +3,8 @@ from datetime import datetime
 import pytest
 from celery.schedules import crontab, solar, schedule
 
-from beatx.serializer import encode_datetime, decode_datetime, encode_schedule, decode_schedule
+from beatx.serializer import encode_datetime, decode_datetime, \
+    encode_schedule, decode_schedule
 
 
 class TestEncodingDatetime:
