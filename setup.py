@@ -20,7 +20,7 @@ setup(
         'celery',
     ],
 
-    packages=find_packages(exclude=['tests.*', 'tests']),
+    packages=find_packages(exclude=['beatx.tests.*', 'beatx.tests']),
 
     classifiers=[
         # 'Development Status :: 5 - Production/Stable',
