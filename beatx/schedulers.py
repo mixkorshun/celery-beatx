@@ -76,9 +76,19 @@ class ClusterScheduler(Scheduler):
     """
 
     def __init__(self, app, *args, **kwargs):
-        self.lock_ttl = getattr(app.conf, 'beat_store_lock_ttl', 60)
-
         super().__init__(app, *args, **kwargs)
+
+        self.lock_ttl = getattr(
+            app.conf,
+            'beat_store_lock_ttl',
+            self.max_interval + 1
+        )
+
+        if self.max_interval >= self.lock_ttl:
+            raise ImproperlyConfigured(
+                '`beat_store_lock_ttl` must be greater '
+                'then `beat_max_loop_interval`'
+            )
 
     def acquire_lock(self):
         acquired = self.store.acquire_lock(self.lock_ttl)
