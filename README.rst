@@ -17,29 +17,30 @@ celery-beatx
    :alt: MIT
    :target: https://opensource.org/licenses/MIT
 
-BeatX is celery plugin which improve celery beat functionality.
+BeatX is modern fail-safe schedule for Celery.
 
-Features:
-  - store scheduler data in various storages
-  - support cluster scheduler running
+BeatX allows you store schedule in different storages and
+provides functionality to start celery-beat simultaneously at many nodes.
 
 See the documentation_ for more details.
 
-Installation
-------------
+Install
+-------
 
 The package can be installed using::
 
     pip install celery-beatx
 
-Add following settings to celery configuration::
+After package installed you should set celery scheduler::
 
-    CELERY_BEAT_SCHEDULER = 'beatx.schedulers.Scheduler'
-    # or
-    # CELERY_BEAT_SCHEDULER = 'beatx.schedulers.ClusterScheduler'
+   celery_app.config_from_object({
+      # ...
+      'beat_scheduler': 'beatx.schedulers.Scheduler',
+      'beat_store': 'redis://127.0.0.1:6379/',
+      # ...
+   })
 
-    CELERY_BEAT_STORE = "redis://127.0.0.1:6379/0"
-
+It works same as default celery scheduler, but stores schedule in redis storage.
 
 Contributing
 ------------
