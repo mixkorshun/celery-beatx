@@ -9,7 +9,6 @@ def get_mock_app(store_url='mock://'):
     app.config_from_object({
         'beat_schedule': {},
         'beat_store': store_url,
-        'beat_store_lock_ttl': 60,
 
         'beat_store_classes': {
             'dummy': 'beatx.store.dummy.Store',
