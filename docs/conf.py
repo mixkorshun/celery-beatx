@@ -91,6 +91,7 @@ html_theme = 'alabaster'
 #
 html_theme_options = {
     'description': 'Modern fail-safe schedule for Celery.',
+
     'github_user': 'mixkorshun',
     'github_repo': 'celery-beatx',
     'show_powered_by': False,
@@ -156,3 +157,7 @@ texinfo_documents = [
      author, 'celery-beatx', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+
+def setup(app):
+    app.add_stylesheet('custom.css')
