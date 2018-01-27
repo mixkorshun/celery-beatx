@@ -1,21 +1,7 @@
 .. image:: https://raw.githubusercontent.com/mixkorshun/celery-beatx/master/docs/_static/logo-small.png
    :alt: Celery BeatX
 
-.. image:: https://travis-ci.org/mixkorshun/celery-beatx.svg?branch=master
-   :alt: build status
-   :target: https://travis-ci.org/mixkorshun/celery-beatx
-.. image:: https://codecov.io/gh/mixkorshun/celery-beatx/branch/master/graph/badge.svg
-   :alt: codecov
-   :target: https://codecov.io/gh/mixkorshun/celery-beatx
-.. image:: https://badge.fury.io/py/celery-beatx.svg
-   :alt: pypi
-   :target: https://pypi.python.org/pypi/celery-beatx
-.. image:: https://img.shields.io/badge/code%20style-pep8-orange.svg
-   :alt: pep8
-   :target: https://www.python.org/dev/peps/pep-0008/
-.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
-   :alt: MIT
-   :target: https://opensource.org/licenses/MIT
+|build-status| |coverage| |version| |pep8| |license|
 
 BeatX is modern fail-safe schedule for Celery.
 
@@ -52,3 +38,22 @@ Pull requests are welcome too.
 
 
 .. _documentation: https://celery-beatx.readthedocs.io/
+
+
+.. |build-status| image:: https://travis-ci.org/mixkorshun/celery-beatx.svg?branch=master
+    :alt: build status
+    :target: https://travis-ci.org/mixkorshun/celery-beatx
+
+.. |coverage| image:: https://codecov.io/gh/mixkorshun/celery-beatx/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/mixkorshun/celery-beatx
+
+.. |license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+    :alt: MIT
+    :target: https://opensource.org/licenses/MIT
+
+.. |version| image:: https://badge.fury.io/py/celery-beatx.svg
+    :alt: pypi
+    :target: https://pypi.python.org/pypi/celery-beatx
+
+.. |pep8| image:: https://img.shields.io/badge/code%20style-pep8-orange.svg
+    :target: https://www.python.org/dev/peps/pep-0008/
