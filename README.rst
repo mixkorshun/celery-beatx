@@ -1,5 +1,5 @@
-celery-beatx
-============
+.. image:: https://raw.githubusercontent.com/mixkorshun/celery-beatx/master/docs/_static/logo-small.png
+   :alt: Celery BeatX
 
 .. image:: https://travis-ci.org/mixkorshun/celery-beatx.svg?branch=master
    :alt: build status
