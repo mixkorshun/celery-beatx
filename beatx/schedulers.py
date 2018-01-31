@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 def get_store(app):
     """
-    Get store object fro celery application.
+    Get store object from celery application.
 
     :param app: celery application
     :return: store
@@ -19,6 +19,8 @@ def get_store(app):
     store_classes = getattr(app.conf, 'beat_store_classes', {
         'dummy': 'beatx.store.dummy.Store',
         'redis': 'beatx.store.redis.Store',
+        'memcached': 'beatx.store.memcached.MemcachedStore',
+        'pylibmc': 'beatx.store.memcached.PyLibMCStore',
     })
     store_url = getattr(app.conf, 'beat_store')
 
