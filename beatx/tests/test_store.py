@@ -25,21 +25,21 @@ class TestRedisStore:
     store = None
 
     def setup_method(self, method):
-        REDIS_URL = environ.get('REDIS_URL', 'redis://127.0.0.1/0')
+        redis_url = environ.get('REDIS_URL', 'redis://127.0.0.1/0')
 
         try:
             from redis import StrictRedis, \
                 ConnectionError as RedisConnectionError
 
             try:
-                StrictRedis(REDIS_URL).ping()
+                StrictRedis.from_url(redis_url).ping()
             except RedisConnectionError:
-                skip('Redis not available by %s address' % REDIS_URL)
+                skip('Redis not available by %s address' % redis_url)
 
         except ImportError:
             raise pytest.skip('No `redis` package installed')
 
-        self.store = redis.Store(REDIS_URL)
+        self.store = redis.Store(redis_url)
 
     def teardown_method(self, method):
         self.store.rdb.flushdb()
