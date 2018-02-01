@@ -1,7 +1,9 @@
 from datetime import datetime
 from os import environ
 
+import pytest
 from celery.beat import ScheduleEntry
+from pytest import skip
 
 from beatx.store import dummy, redis
 
@@ -23,9 +25,21 @@ class TestRedisStore:
     store = None
 
     def setup_method(self, method):
-        self.store = redis.Store(
-            environ.get('REDIS_URL', 'redis://127.0.0.1/0')
-        )
+        REDIS_URL = environ.get('REDIS_URL', 'redis://127.0.0.1/0')
+
+        try:
+            from redis import StrictRedis, \
+                ConnectionError as RedisConnectionError
+
+            try:
+                StrictRedis(REDIS_URL).ping()
+            except RedisConnectionError:
+                skip('Redis not available by %s address' % REDIS_URL)
+
+        except ImportError:
+            raise pytest.skip('No `redis` package installed')
+
+        self.store = redis.Store(REDIS_URL)
 
     def teardown_method(self, method):
         self.store.rdb.flushdb()
