@@ -98,13 +98,13 @@ class Scheduler(BaseScheduler):
             acquired = self.acquire_lock()
 
             if acquired:
-                logger.info('beat: Lock acquired.')
+                logger.info('beatX: Lock acquired.')
             else:
-                logger.info('beat: Awaiting lock...')
+                logger.info('beatX: Awaiting lock...')
                 return self.max_interval
         else:
             self.store.renew_lock()
-            logger.debug('beat: Lock renewed.')
+            logger.info('beatX: Lock renewed.')
 
         return super().tick(*args, **kwargs)
 
@@ -113,4 +113,4 @@ class Scheduler(BaseScheduler):
 
         if self.store.has_locked():
             self.store.release_lock()
-            logger.info('beat: Lock released.')
+            logger.info('beatX: Lock released.')
