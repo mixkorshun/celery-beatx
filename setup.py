@@ -21,7 +21,7 @@ setup(
     packages=find_packages(exclude=['beatx.tests.*', 'beatx.tests']),
 
     classifiers=[
-        # 'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
