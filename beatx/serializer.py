@@ -8,17 +8,53 @@ __all__ = ('serialize_entry', 'deserialize_entry')
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 
 
-def encode_datetime(dt, allow_null=False):
-    if dt is None and not allow_null:
-        raise ValueError('Cannot encode datetime. None is not datetime.')
+def serialize_entry(entry):
+    """
+    Serialize ScheduleEntry to json-valid dictionary.
 
+    Helps serialize entry to json, yml and any other formats.
+
+    :param entry: ScheduleEntry
+    :return: json-valid dictionary
+    """
+    return {
+        'name': entry.name,
+        'task': entry.task,
+        'schedule': encode_schedule(entry.schedule),
+        'args': entry.args,
+        'kwargs': entry.kwargs,
+        'last_run_at': encode_datetime(entry.last_run_at),
+        'total_run_count': entry.total_run_count,
+        'options': entry.options
+    }
+
+
+def deserialize_entry(entry):
+    """
+    Deserialize ScheduleEntry from dictionary.
+
+    Helps deserialize entry from json, yml and any other formats.
+
+    :param entry:
+    :return:
+    """
+    return ScheduleEntry(
+        name=entry['name'],
+        task=entry['task'],
+        schedule=decode_schedule(entry['schedule']),
+        args=entry['args'],
+        kwargs=entry['kwargs'],
+        last_run_at=decode_datetime(entry['last_run_at']),
+        total_run_count=entry['total_run_count'],
+        options=entry['options'],
+    )
+
+
+def encode_datetime(dt):
     return dt.strftime(DATETIME_FORMAT) if dt else None
 
 
-def decode_datetime(s, allow_null=False):
-    if s is None and not allow_null:
-        raise ValueError('Cannot decode datetime. None is not datetime.')
-
+def decode_datetime(s):
     return datetime.strptime(s, DATETIME_FORMAT) if s else None
 
 
@@ -88,29 +124,3 @@ def decode_schedule(obj):
                 'type': _type
             }
         )
-
-
-def serialize_entry(entry, schedule_encoder=encode_schedule):
-    return {
-        'name': entry.name,
-        'task': entry.task,
-        'schedule': schedule_encoder(entry.schedule),
-        'args': entry.args,
-        'kwargs': entry.kwargs,
-        'last_run_at': encode_datetime(entry.last_run_at, allow_null=True),
-        'total_run_count': entry.total_run_count,
-        'options': entry.options
-    }
-
-
-def deserialize_entry(entry, schedule_decoder=decode_schedule):
-    return ScheduleEntry(
-        name=entry['name'],
-        task=entry['task'],
-        schedule=schedule_decoder(entry['schedule']),
-        args=entry['args'],
-        kwargs=entry['kwargs'],
-        last_run_at=decode_datetime(entry['last_run_at'], allow_null=True),
-        total_run_count=entry['total_run_count'],
-        options=entry['options'],
-    )
