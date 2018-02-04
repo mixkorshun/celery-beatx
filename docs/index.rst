@@ -63,6 +63,19 @@ After package installed you should set celery scheduler::
    })
 
 
+Configuration
+-------------
+
+**conf.beatx_store** – URI to schedule storage. Supports schemes:
+ * redis:// – redis storage (require ``redis```` package)
+ * memcached:// – memcache storage (require ``python-memcached`` package)
+ * pylibmc:// – memcache storage using PyLibMC (require ``pylibmc`` package)
+ * dummy:// – dummy storage for testing purpose
+
+**conf.beatx_store_lock_ttl** – lock ttl, must be greater then `beat_max_loop_interval`
+configuration.
+
+
 Indices and tables
 ==================
 
