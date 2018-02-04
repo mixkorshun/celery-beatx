@@ -3,10 +3,14 @@
 
 |build-status| |coverage| |version| |pep8| |license|
 
-BeatX is modern fail-safe schedule for Celery.
+Celery-BeatX is a modern fail-safe schedule for Celery.
 
-BeatX allows you store schedule in different storages and
+Celery-BeatX allows you to store schedule in different storages and
 provides functionality to start celery-beat simultaneously at many nodes.
+
+Features:
+ * stores schedule in different storages (currently support: redis, memcached)
+ * allows to correctly run several instances of celerybeat simultaneously
 
 See the documentation_ for more details.
 
