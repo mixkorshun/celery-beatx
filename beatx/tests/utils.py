@@ -8,9 +8,9 @@ def get_mock_app(store_url='mock://'):
 
     app.config_from_object({
         'beat_schedule': {},
-        'beat_store': store_url,
+        'beatx_store': store_url,
 
-        'beat_store_classes': {
+        'beatx_store_classes': {
             'dummy': 'beatx.store.dummy.Store',
             'redis': 'beatx.store.redis.Store',
             'mock': Mock(
