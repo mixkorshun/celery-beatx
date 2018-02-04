@@ -26,8 +26,6 @@ After package installed you should set celery scheduler::
       # ...
    })
 
-It works same as default celery scheduler, but stores schedule in redis storage.
-
 Contributing
 ------------
 

@@ -4,7 +4,7 @@ setup(
     name='celery-beatx',
     version='0.3.3',
     url='https://github.com/mixkorshun/celery-beatx',
-    description='Fail-safety scheduler for Celery',
+    description='Modern fail-safe schedule for Celery',
     keywords=['celery', 'celery-beat', 'scheduler'],
 
     long_description=open('README.rst', 'r').read(),
