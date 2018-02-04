@@ -26,13 +26,13 @@ class Scheduler(BaseScheduler):
         :param app: celery application
         :return: store
         """
-        store_classes = getattr(app.conf, 'beat_store_classes', {
+        store_classes = getattr(app.conf, 'beatx_store_classes', {
             'dummy': 'beatx.store.dummy.Store',
             'redis': 'beatx.store.redis.Store',
             'memcached': 'beatx.store.memcached.MemcachedStore',
             'pylibmc': 'beatx.store.memcached.PyLibMCStore',
         })
-        store_url = getattr(app.conf, 'beat_store')
+        store_url = getattr(app.conf, 'beatx_store')
 
         scheme = urlparse(store_url).scheme
 
@@ -61,13 +61,13 @@ class Scheduler(BaseScheduler):
 
         self.lock_ttl = getattr(
             app.conf,
-            'beat_store_lock_ttl',
+            'beatx_store_lock_ttl',
             self.max_interval + 1
         )
 
         if self.max_interval >= self.lock_ttl:
             raise ImproperlyConfigured(
-                '`beat_store_lock_ttl` must be greater '
+                '`beatx_store_lock_ttl` must be greater '
                 'then `beat_max_loop_interval`'
             )
 
