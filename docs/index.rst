@@ -8,25 +8,25 @@ provides functionality to start celery-beat simultaneously at many nodes.
 
 Features:
  * stores schedule in different storages (currently support: redis, memcached)
- * allows to correctly run several instances of celerybeat simultaneously
+ * allows to correctly run several instances of celery-beat simultaneously
 
 How it works
 ------------
 
-Celery is highly scalable distributed task queue. But beat cannot be scaled to
-different nodes, because:
+Celery is highly scalable distributed task queue. But celery-beat cannot
+be scaled to different nodes, because:
  * it stores schedule at local filesystem and doesn't allow syncing it
  * if several instances of beat run simultaneously, each instance will
    queue each task
 
 Celery-BeatX solves both problems:
  * allows you to store schedule in different storages
- * adds lock, so only single instance of beat will be active at a time
+ * adds lock, so only single instance of celery-beat will be active at a time
 
 Example
 ~~~~~~~
 
-Consider for example system with 3 nodes with beat.
+Consider for example system with 3 nodes with celery-beat.
 
 .. image:: _static/states/state1.png
    :width: 256px
@@ -67,7 +67,7 @@ Configuration
 -------------
 
 **conf.beatx_store** – URI to schedule storage. Supports schemes:
- * redis:// – redis storage (require ``redis```` package)
+ * redis:// – redis storage (require ``redis`` package)
  * memcached:// – memcache storage (require ``python-memcached`` package)
  * pylibmc:// – memcache storage using PyLibMC (require ``pylibmc`` package)
  * dummy:// – dummy storage for testing purpose
