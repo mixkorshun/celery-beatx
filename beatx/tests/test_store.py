@@ -5,7 +5,7 @@ import pytest
 from celery.beat import ScheduleEntry
 from pytest import skip
 
-from beatx.store import dummy, redis
+from beatx.store import dummy, redis_store
 
 
 def test_dummy_store_api():
@@ -39,7 +39,7 @@ class TestRedisStore:
         except ImportError:
             raise pytest.skip('No `redis` package installed')
 
-        self.store = redis.Store(redis_url)
+        self.store = redis_store.Store(redis_url)
 
     def teardown_method(self, method):
         self.store.rdb.flushdb()

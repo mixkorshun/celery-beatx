@@ -31,7 +31,7 @@ class Scheduler(BaseScheduler):
         """
         store_classes = getattr(app.conf, 'beatx_store_classes', {
             'dummy': 'beatx.store.dummy.Store',
-            'redis': 'beatx.store.redis.Store',
+            'redis': 'beatx.store.redis_store.Store',
             'memcached': 'beatx.store.memcached.MemcachedStore',
             'pylibmc': 'beatx.store.memcached.PyLibMCStore',
         })
