@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='celery-beatx',
-    version='0.4.1a2',
+    version='0.4.1a3',
     url='https://github.com/mixkorshun/celery-beatx',
     description='Modern fail-safe schedule for Celery',
     keywords=['celery', 'celery-beat', 'scheduler'],
