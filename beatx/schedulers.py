@@ -60,8 +60,7 @@ class BeatXScheduler(Scheduler):
 
         return store_class(store_url)
 
-    def __init__(self, app, schedule=None, max_interval=None,
-                 Producer=None, lazy=False, sync_every_tasks=None, *args, **kwargs):
+    def __init__(self, app, *args, **kwargs):
         self.store = self.get_store(app)
 
         if not PY2:
@@ -127,7 +126,7 @@ class BeatXScheduler(Scheduler):
             super().close()
         else:
             super(BeatXScheduler, self).close()
-            
+
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
