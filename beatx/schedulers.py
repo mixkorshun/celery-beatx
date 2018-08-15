@@ -66,7 +66,7 @@ class Scheduler(BaseScheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BaseScheduler, self).__init__()
+            super(BaseScheduler).__init__(app, **kwargs)
 
         self.lock_ttl = getattr(
             app.conf,
@@ -115,11 +115,18 @@ class Scheduler(BaseScheduler):
             self.store.renew_lock()
             logger.info('beatX: Lock renewed.')
 
-        return super().tick(*args, **kwargs)
+        if not PY2:
+            return super().tick(*args, **kwargs)
+        else:
+            return super(BaseScheduler).tick(*args, **kwargs)
 
     def close(self):
-        self.sync()
-        
+
+        if not PY2:
+            super().close()
+        else:
+            super(BaseScheduler).close()
+
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
