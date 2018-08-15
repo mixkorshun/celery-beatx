@@ -1,7 +1,9 @@
 import pytest
 from celery.exceptions import ImproperlyConfigured
-from unittest.mock import Mock, patch
-
+try:
+    from unittest.mock import Mock, patch
+except ImportError:
+    from mock import Mock, patch
 from beatx.schedulers import BeatXScheduler
 from .utils import get_mock_app
 

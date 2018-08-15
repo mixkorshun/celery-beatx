@@ -1,5 +1,8 @@
 from celery import Celery
-from unittest.mock import Mock
+try:
+    from unittest.mock import Mock, patch
+except ImportError:
+    from mock import Mock, patch
 
 
 def get_mock_app(store_url='mock://'):
