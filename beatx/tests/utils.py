@@ -1,6 +1,8 @@
-from unittest.mock import Mock
-
 from celery import Celery
+try:
+    from unittest.mock import Mock
+except ImportError:
+    from mock import Mock
 
 
 def get_mock_app(store_url='mock://'):
@@ -12,7 +14,7 @@ def get_mock_app(store_url='mock://'):
 
         'beatx_store_classes': {
             'dummy': 'beatx.store.dummy.Store',
-            'redis': 'beatx.store.redis.Store',
+            'redis': 'beatx.store.redis_store.Store',
             'mock': Mock(
                 spec=type, return_value=Mock(
                     acquire_lock=Mock(return_value=True),
