@@ -3,3 +3,4 @@ pytest-cov
 
 redis
 ephem
+mock
