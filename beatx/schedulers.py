@@ -1,15 +1,22 @@
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
-from celery.beat import Scheduler as BaseScheduler
+import sys
+
+from celery.beat import Scheduler
 from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
 from .utils import import_string
 
+PY2 = sys.version_info[0] == 2
+
 logger = get_logger(__name__)
 
 
-class Scheduler(BaseScheduler):
+class BeatXScheduler(Scheduler):
     """
     Celery scheduler which use store class to load/save schedule.
 
@@ -28,7 +35,7 @@ class Scheduler(BaseScheduler):
         """
         store_classes = getattr(app.conf, 'beatx_store_classes', {
             'dummy': 'beatx.store.dummy.Store',
-            'redis': 'beatx.store.redis.Store',
+            'redis': 'beatx.store.redis_store.Store',
             'memcached': 'beatx.store.memcached.MemcachedStore',
             'pylibmc': 'beatx.store.memcached.PyLibMCStore',
         })
@@ -57,7 +64,10 @@ class Scheduler(BaseScheduler):
     def __init__(self, app, *args, **kwargs):
         self.store = self.get_store(app)
 
-        super().__init__(app, *args, **kwargs)
+        if not PY2:
+            super().__init__(app, *args, **kwargs)
+        else:
+            super(BeatXScheduler, self).__init__(app, *args, **kwargs)
 
         self.lock_ttl = getattr(
             app.conf,
@@ -106,10 +116,17 @@ class Scheduler(BaseScheduler):
             self.store.renew_lock()
             logger.info('beatX: Lock renewed.')
 
-        return super().tick(*args, **kwargs)
+        if not PY2:
+            return super().tick(*args, **kwargs)
+        else:
+            return super(BeatXScheduler, self).tick(*args, **kwargs)
 
     def close(self):
-        super().close()
+
+        if not PY2:
+            super().close()
+        else:
+            super(BeatXScheduler, self).close()
 
         if self.store.has_locked():
             self.store.release_lock()

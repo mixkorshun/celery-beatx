@@ -2,6 +2,7 @@ sudo: false
 language: python
 cache: pip
 python:
+  - '2.7'
   - '3.4'
   - '3.5'
   - '3.6'
@@ -12,10 +13,10 @@ services:
 before_script:
   - pip install -q codecov flake8
 
+  - pip install -q -r test_requirements.txt && pip install -e .
+
 script:
   - flake8 beatx/
-
-  - pip install -q -r test_requirements.txt && pip install -e .
 
   - py.test --cov ./ .
 

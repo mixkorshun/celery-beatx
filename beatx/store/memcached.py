@@ -1,5 +1,7 @@
-from urllib.parse import urlparse
-
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 from beatx import serializer
 
 
@@ -18,7 +20,7 @@ class BaseStore:
     def load_entries(self):
         return {
             name: serializer.deserialize_entry(data)
-            for name, data in self.client.get(self.SCHEDULE_KEY).items()
+            for name, data in self.client.get(self.SCHEDULE_KEY, {}).items()
         }
 
     def save_entries(self, entries):
