@@ -66,7 +66,7 @@ class BeatXScheduler(Scheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BeatXScheduler, self).__init__(app, **kwargs)
+            super(BeatXScheduler, self).__init__(app, *args, **kwargs)
 
         self.lock_ttl = getattr(
             app.conf,
