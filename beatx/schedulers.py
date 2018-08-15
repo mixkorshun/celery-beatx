@@ -67,7 +67,7 @@ class Scheduler(BaseScheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BaseScheduler).__init__(app=app, schedule=schedule, max_interval=max_interval,
+            super(BaseScheduler, self).__init__(app=app, schedule=schedule, max_interval=max_interval,
                  Producer=Producer, lazy=lazy, sync_every_tasks=sync_every_tasks)
 
         self.lock_ttl = getattr(
@@ -120,14 +120,14 @@ class Scheduler(BaseScheduler):
         if not PY2:
             return super().tick(*args, **kwargs)
         else:
-            return super(BaseScheduler).tick(*args, **kwargs)
+            return super(BaseScheduler, self).tick(*args, **kwargs)
 
     def close(self):
 
         if not PY2:
             super().close()
         else:
-            super(BaseScheduler).close()
+            super(BaseScheduler, self).close()
 
         if self.store.has_locked():
             self.store.release_lock()
