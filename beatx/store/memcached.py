@@ -20,7 +20,7 @@ class BaseStore:
     def load_entries(self):
         return {
             name: serializer.deserialize_entry(data)
-            for name, data in self.client.get(self.SCHEDULE_KEY).items()
+            for name, data in self.client.get(self.SCHEDULE_KEY, {}).items()
         }
 
     def save_entries(self, entries):
