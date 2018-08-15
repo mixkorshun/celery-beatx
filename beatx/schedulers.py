@@ -8,6 +8,9 @@ from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
 from .utils import import_string
+import sys
+
+PY2 = sys.version_info[0] == 2
 
 logger = get_logger(__name__)
 
@@ -60,7 +63,10 @@ class Scheduler(BaseScheduler):
     def __init__(self, app, *args, **kwargs):
         self.store = self.get_store(app)
 
-        super().__init__(app, *args, **kwargs)
+        if not PY2:
+            super().__init__(app, *args, **kwargs)
+        else:
+            super(app).__init__(*args, **kwargs)
 
         self.lock_ttl = getattr(
             app.conf,
