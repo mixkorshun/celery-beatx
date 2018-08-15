@@ -118,11 +118,8 @@ class Scheduler(BaseScheduler):
         return super().tick(*args, **kwargs)
 
     def close(self):
-        if not PY2:
-            super().close()
-        else:
-            super(BaseScheduler).close()
-
+        self.sync()
+        
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
