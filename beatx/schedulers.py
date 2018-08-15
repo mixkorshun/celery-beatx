@@ -118,7 +118,10 @@ class Scheduler(BaseScheduler):
         return super().tick(*args, **kwargs)
 
     def close(self):
-        super().close()
+        if not PY2:
+            super().close()
+        else:
+            super(BaseScheduler).close()
 
         if self.store.has_locked():
             self.store.release_lock()
