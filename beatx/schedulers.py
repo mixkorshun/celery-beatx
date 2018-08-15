@@ -46,13 +46,23 @@ class BeatXScheduler(Scheduler):
         :param app: celery application
         :return: store
         """
-        has_upper_classes_config = hasattr(app.conf, BeatXScheduler.classes_config.upper())
+        has_upper_classes_config = hasattr(
+            app.conf,
+            BeatXScheduler.classes_config.upper()
+        )
         if has_upper_classes_config:
-            store_classes = BeatXScheduler.get_store_classes(app, BeatXScheduler.classes_config.upper())
+            store_classes = BeatXScheduler.get_store_classes(
+                app, BeatXScheduler.classes_config.upper()
+            )
         else:
-            store_classes = BeatXScheduler.get_store_classes(app, BeatXScheduler.classes_config)
+            store_classes = BeatXScheduler.get_store_classes(
+                app, BeatXScheduler.classes_config
+            )
 
-        has_upper_store_config = hasattr(app.conf, BeatXScheduler.store_config.upper())
+        has_upper_store_config = hasattr(
+            app.conf,
+            BeatXScheduler.store_config.upper()
+        )
         if has_upper_store_config:
             store_url = getattr(app.conf, BeatXScheduler.store_config.upper())
         else:
@@ -86,7 +96,10 @@ class BeatXScheduler(Scheduler):
         else:
             super(BeatXScheduler, self).__init__(app, *args, **kwargs)
 
-        has_upper = hasattr(app.conf, BeatXScheduler.store_lock_ttl_config.upper())
+        has_upper = hasattr(
+            app.conf,
+            BeatXScheduler.store_lock_ttl_config.upper()
+        )
         if has_upper:
             self.lock_ttl = getattr(
                 app.conf,
