@@ -82,7 +82,7 @@ class TestClusterSchedulerInactiveMode:
         assert scheduler.store.load_entries.called is False
         assert scheduler.store.save_entries.called is False
 
-    @patch('beatx.schedulers.BaseScheduler.tick')
+    @patch('beatx.schedulers.Scheduler.tick')
     def test_inactive_tick(self, base_tick):
         scheduler = BeatXScheduler(get_mock_app('mock+inactive://'))
 
@@ -91,7 +91,7 @@ class TestClusterSchedulerInactiveMode:
         assert base_tick.called is False
         assert ret_val == scheduler.max_interval
 
-    @patch('beatx.schedulers.BaseScheduler.tick')
+    @patch('beatx.schedulers.Scheduler.tick')
     def test_acquire_lock_on_tick(self, base_tick):
         scheduler = BeatXScheduler(get_mock_app('mock+inactive://'))
 
