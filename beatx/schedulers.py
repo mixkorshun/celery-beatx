@@ -67,8 +67,7 @@ class BeatXScheduler(Scheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(Scheduler, self).__init__(app=app, schedule=schedule, max_interval=max_interval,
-                 Producer=Producer, lazy=lazy, sync_every_tasks=sync_every_tasks)
+            super(Scheduler, self).__init__()
 
         self.lock_ttl = getattr(
             app.conf,
@@ -120,7 +119,7 @@ class BeatXScheduler(Scheduler):
         if not PY2:
             return super().tick(*args, **kwargs)
         else:
-            return super(Scheduler, self).tick(*args, **kwargs)
+            return super(Scheduler, self).tick()
 
     def close(self):
 
