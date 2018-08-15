@@ -1,4 +1,7 @@
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
 
 from celery.beat import Scheduler as BaseScheduler
 from celery.exceptions import ImproperlyConfigured
