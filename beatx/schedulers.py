@@ -60,13 +60,15 @@ class Scheduler(BaseScheduler):
 
         return store_class(store_url)
 
-    def __init__(self, app, *args, **kwargs):
+    def __init__(self, app, schedule=None, max_interval=None,
+                 Producer=None, lazy=False, sync_every_tasks=None, *args, **kwargs):
         self.store = self.get_store(app)
 
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BaseScheduler).__init__(app, **kwargs)
+            super(BaseScheduler).__init__(app=app, schedule=schedule, max_interval=max_interval,
+                 Producer=Producer, lazy=lazy, sync_every_tasks=sync_every_tasks)
 
         self.lock_ttl = getattr(
             app.conf,
