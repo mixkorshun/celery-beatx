@@ -66,7 +66,7 @@ class Scheduler(BaseScheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BaseScheduler, self).__init__(app, *args, **kwargs)
+            super(BaseScheduler, self).__init__()
 
         self.lock_ttl = getattr(
             app.conf,
