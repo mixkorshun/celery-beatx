@@ -67,7 +67,7 @@ class BeatXScheduler(Scheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(Scheduler, self).__init__()
+            super(BeatXScheduler, self).__init__(app, **kwargs)
 
         self.lock_ttl = getattr(
             app.conf,
@@ -119,15 +119,15 @@ class BeatXScheduler(Scheduler):
         if not PY2:
             return super().tick(*args, **kwargs)
         else:
-            return super(Scheduler, self).tick()
+            return super(BeatXScheduler, self).tick(*args, **kwargs)
 
     def close(self):
 
         if not PY2:
             super().close()
         else:
-            super(Scheduler, self).close()
-
+            super(BeatXScheduler, self).close()
+            
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
