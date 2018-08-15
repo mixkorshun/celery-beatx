@@ -3,7 +3,7 @@ try:
 except ImportError:
      from urlparse import urlparse
 
-from celery.beat import Scheduler as BaseScheduler
+from celery.beat import Scheduler
 from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
@@ -15,7 +15,7 @@ PY2 = sys.version_info[0] == 2
 logger = get_logger(__name__)
 
 
-class Scheduler(BaseScheduler):
+class BeatXScheduler(Scheduler):
     """
     Celery scheduler which use store class to load/save schedule.
 
@@ -67,7 +67,7 @@ class Scheduler(BaseScheduler):
         if not PY2:
             super().__init__(app, *args, **kwargs)
         else:
-            super(BaseScheduler, self).__init__(app=app, schedule=schedule, max_interval=max_interval,
+            super(Scheduler, self).__init__(app=app, schedule=schedule, max_interval=max_interval,
                  Producer=Producer, lazy=lazy, sync_every_tasks=sync_every_tasks)
 
         self.lock_ttl = getattr(
@@ -120,14 +120,14 @@ class Scheduler(BaseScheduler):
         if not PY2:
             return super().tick(*args, **kwargs)
         else:
-            return super(BaseScheduler, self).tick(*args, **kwargs)
+            return super(Scheduler, self).tick(*args, **kwargs)
 
     def close(self):
 
         if not PY2:
             super().close()
         else:
-            super(BaseScheduler, self).close()
+            super(Scheduler, self).close()
 
         if self.store.has_locked():
             self.store.release_lock()
