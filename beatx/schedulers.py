@@ -1,14 +1,15 @@
 try:
     from urllib.parse import urlparse
 except ImportError:
-     from urlparse import urlparse
+    from urlparse import urlparse
+
+import sys
 
 from celery.beat import Scheduler
 from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
 from .utils import import_string
-import sys
 
 PY2 = sys.version_info[0] == 2
 

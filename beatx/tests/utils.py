@@ -1,6 +1,5 @@
-from unittest.mock import Mock
-
 from celery import Celery
+from unittest.mock import Mock
 
 
 def get_mock_app(store_url='mock://'):
