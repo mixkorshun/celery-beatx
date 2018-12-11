@@ -56,7 +56,6 @@ class Scheduler(BaseScheduler):
 
     def __init__(self, app, *args, **kwargs):
         self.store = self.get_store(app)
-        self._store_schedule = {}
 
         super().__init__(app, *args, **kwargs)
 
@@ -74,20 +73,8 @@ class Scheduler(BaseScheduler):
 
     def setup_schedule(self):
         if self.store.has_locked():
-            self._store_schedule = self.store.load_entries()
             self.merge_inplace(self.app.conf.beat_schedule)
-            self.install_default_entries(self.schedule)
-
-    def get_schedule(self):
-        if not self.store.has_locked():
-            return super().get_schedule()
-        return self._store_schedule
-
-    def set_schedule(self, schedule):
-        if not self.store.has_locked():
-            super().set_schedule(schedule)
-        self._store_schedule = schedule
-    schedule = property(get_schedule, set_schedule)
+            self.install_default_entries(self.store.load_entries())
 
     def sync(self):
         if not self.store.has_locked():
