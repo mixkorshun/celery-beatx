@@ -124,3 +124,7 @@ class Scheduler(BaseScheduler):
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
+
+    @property
+    def info(self):
+        return '    . store -> {}'.format(self.store.__class__.__module__)
