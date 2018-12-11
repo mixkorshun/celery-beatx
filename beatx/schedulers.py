@@ -74,10 +74,7 @@ class Scheduler(BaseScheduler):
     def setup_schedule(self):
         if self.store.has_locked():
             self.merge_inplace(self.app.conf.beat_schedule)
-            self.install_default_entries(self.schedule)
-            self.update_from_dict(self.store.load_entries())
-
-            self.sync()
+            self.install_default_entries(self.store.load_entries())
 
     def sync(self):
         if not self.store.has_locked():
@@ -114,3 +111,7 @@ class Scheduler(BaseScheduler):
         if self.store.has_locked():
             self.store.release_lock()
             logger.info('beatX: Lock released.')
+
+    @property
+    def info(self):
+        return '    . store -> {}'.format(self.store.__class__.__module__)

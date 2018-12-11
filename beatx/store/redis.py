@@ -21,11 +21,13 @@ class Store:
         }
 
     def save_entries(self, entries):
-        self.rdb.hmset(self.SCHEDULE_KEY, {
-            name: json.dumps(
-                serializer.serialize_entry(entry)
-            ) for name, entry in entries.items()
-        })
+        self.rdb.delete(self.SCHEDULE_KEY)
+        if entries:
+            self.rdb.hmset(self.SCHEDULE_KEY, {
+                name: json.dumps(
+                    serializer.serialize_entry(entry)
+                ) for name, entry in entries.items()
+            })
 
     def has_locked(self):
         return self.lock is not None

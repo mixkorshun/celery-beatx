@@ -2,10 +2,9 @@ from datetime import datetime
 
 from celery.beat import ScheduleEntry
 from celery.schedules import crontab, schedule, solar
+from celery.utils.time import maybe_iso8601
 
 __all__ = ('serialize_entry', 'deserialize_entry')
-
-DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 
 
 def serialize_entry(entry):
@@ -51,11 +50,11 @@ def deserialize_entry(entry):
 
 
 def encode_datetime(dt):
-    return dt.strftime(DATETIME_FORMAT) if dt else None
+    return dt.isoformat() if dt else None
 
 
 def decode_datetime(s):
-    return datetime.strptime(s, DATETIME_FORMAT) if s else None
+    return maybe_iso8601(s) if s else None
 
 
 def encode_schedule(value):
