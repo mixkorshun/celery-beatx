@@ -73,9 +73,9 @@ class Scheduler(BaseScheduler):
 
     def setup_schedule(self):
         if self.store.has_locked():
-            self.merge_inplace(self.app.conf.beat_schedule)
             self.install_default_entries(self.schedule)
             self.update_from_dict(self.store.load_entries())
+            self.merge_inplace(self.app.conf.beat_schedule)
 
             self.sync()
 
