@@ -1,15 +1,22 @@
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
-from celery.beat import Scheduler as BaseScheduler
+import sys
+
+from celery.beat import Scheduler
 from celery.exceptions import ImproperlyConfigured
 from celery.utils.log import get_logger
 
 from .utils import import_string
 
+PY2 = sys.version_info[0] == 2
+
 logger = get_logger(__name__)
 
 
-class Scheduler(BaseScheduler):
+class BeatXScheduler(Scheduler):
     """
     Celery scheduler which use store class to load/save schedule.
 
@@ -17,6 +24,19 @@ class Scheduler(BaseScheduler):
     Another instances will run in "sleep-mode" and will waiting
     when master instance will dead[or not :-)].
     """
+    classes_config = 'beatx_store_classes'
+    store_config = 'beatx_store'
+    store_lock_ttl_config = 'beatx_store_lock_ttl'
+
+    @staticmethod
+    def get_store_classes(app, config_key):
+        store_classes = getattr(app.conf, config_key, {
+            'dummy': 'beatx.store.dummy.Store',
+            'redis': 'beatx.store.redis_store.Store',
+            'memcached': 'beatx.store.memcached.MemcachedStore',
+            'pylibmc': 'beatx.store.memcached.PyLibMCStore',
+        })
+        return store_classes
 
     @staticmethod
     def get_store(app):
@@ -26,13 +46,27 @@ class Scheduler(BaseScheduler):
         :param app: celery application
         :return: store
         """
-        store_classes = getattr(app.conf, 'beatx_store_classes', {
-            'dummy': 'beatx.store.dummy.Store',
-            'redis': 'beatx.store.redis.Store',
-            'memcached': 'beatx.store.memcached.MemcachedStore',
-            'pylibmc': 'beatx.store.memcached.PyLibMCStore',
-        })
-        store_url = getattr(app.conf, 'beatx_store')
+        has_upper_classes_config = hasattr(
+            app.conf,
+            BeatXScheduler.classes_config.upper()
+        )
+        if has_upper_classes_config:
+            store_classes = BeatXScheduler.get_store_classes(
+                app, BeatXScheduler.classes_config.upper()
+            )
+        else:
+            store_classes = BeatXScheduler.get_store_classes(
+                app, BeatXScheduler.classes_config
+            )
+
+        has_upper_store_config = hasattr(
+            app.conf,
+            BeatXScheduler.store_config.upper()
+        )
+        if has_upper_store_config:
+            store_url = getattr(app.conf, BeatXScheduler.store_config.upper())
+        else:
+            store_url = getattr(app.conf, BeatXScheduler.store_config)
 
         scheme = urlparse(store_url).scheme
 
@@ -57,13 +91,27 @@ class Scheduler(BaseScheduler):
     def __init__(self, app, *args, **kwargs):
         self.store = self.get_store(app)
 
-        super().__init__(app, *args, **kwargs)
+        if not PY2:
+            super().__init__(app, *args, **kwargs)
+        else:
+            super(BeatXScheduler, self).__init__(app, *args, **kwargs)
 
-        self.lock_ttl = getattr(
+        has_upper = hasattr(
             app.conf,
-            'beatx_store_lock_ttl',
-            self.max_interval + 1
+            BeatXScheduler.store_lock_ttl_config.upper()
         )
+        if has_upper:
+            self.lock_ttl = getattr(
+                app.conf,
+                BeatXScheduler.store_lock_ttl_config.upper(),
+                self.max_interval + 1
+            )
+        else:
+            self.lock_ttl = getattr(
+                app.conf,
+                BeatXScheduler.store_lock_ttl_config,
+                self.max_interval + 1
+            )
 
         if self.max_interval >= self.lock_ttl:
             raise ImproperlyConfigured(
@@ -106,10 +154,17 @@ class Scheduler(BaseScheduler):
             self.store.renew_lock()
             logger.info('beatX: Lock renewed.')
 
-        return super().tick(*args, **kwargs)
+        if not PY2:
+            return super().tick(*args, **kwargs)
+        else:
+            return super(BeatXScheduler, self).tick(*args, **kwargs)
 
     def close(self):
-        super().close()
+
+        if not PY2:
+            super().close()
+        else:
+            super(BeatXScheduler, self).close()
 
         if self.store.has_locked():
             self.store.release_lock()

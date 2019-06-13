@@ -25,10 +25,16 @@ After package installed you should set celery scheduler::
 
    celery_app.config_from_object({
       # ...
-      'beat_scheduler': 'beatx.schedulers.Scheduler',
+      'beat_scheduler': 'beatx.schedulers.BeatXScheduler',
       'beatx_store': 'redis://127.0.0.1:6379/',
       # ...
    })
+
+
+Config using celeryconfig.py obj::
+
+    CELERYBEAT_SCHEDULER = 'beatx.schedulers.BeatXScheduler'
+    BEATX_STORE = 'redis://127.0.0.1:6379/
 
 Contributing
 ------------
